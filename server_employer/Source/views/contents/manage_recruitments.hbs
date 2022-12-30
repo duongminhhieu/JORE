@@ -1,0 +1,85 @@
+<div class="rectangle_mid_news_home_recruit">
+    {{> menu}}
+
+    <div id="content_news_home_recruit">
+        <div id="text_recruitment_efficiency">Tổng số tin đã đăng: 5</div>
+        <table id="table_mamage_recruit" style="width: 1333px" rules="rows">
+            <tr class="title_table_recruit">
+                <th>STT</th>
+                <th>Tên tin tuyển dụng</th>
+                <th>Ngày tạo tin</th>
+                <th>Hạn nộp nồ sơ</th>
+                <th>Lượt nộp</th>
+                <th>Số báo cáo</th>
+                <th>Trạng thái tin</th>
+            </tr>
+        </table>
+        <nav aria-label="Page navigation example" id="nav_page_home_manage_recruit">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+    $(".menu_item").removeClass("is_selected")
+    $("#menu_manage_recruit_home_recruit").addClass("is_selected")
+
+    const list_recruitments = {{{ data.list_recruitments }}}
+    const id_recruitments = {{{ data.id_recruitments }}}
+
+    $("#text_recruitment_efficiency").html("Tổng số tin: " + list_recruitments.length)
+
+    for (let i = 0; i < list_recruitments.length; i++) {
+        let _date = new Date(list_recruitments[i].due_date._seconds * 1000);
+        let due_date = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear()
+
+        _date = new Date(list_recruitments[i].creation_date._seconds * 1000);
+        let creation_date = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear()
+
+        let _status = ""
+        if (list_recruitments[i].status == "approved") {
+            _status = "Đã duyệt"
+        }
+        else if (list_recruitments[i].status == "locked") {
+            _status = "Bị khóa"
+        }
+        else if (list_recruitments[i].status == "deleted") {
+            _status = "Bị xóa"
+        }
+        else {
+            _status = "Chờ duyệt"
+        }
+
+        $("#table_mamage_recruit").append(`
+            <tr id="${id_recruitments[i]}" class="table_item">
+                <td>${i + 1}</td>
+                <td>${list_recruitments[i].title}</td>
+                <td>${creation_date}</td>
+                <td>${due_date}</td>
+                <td>${list_recruitments[i].list_cvs.length}</td>
+                <td>number reports</td>
+                <td>${_status}</td>
+            </tr>
+        `)
+    }
+
+    $(".table_item").click(function () {
+        $(location).attr("href", "/employer/detail_recruitment?id=" + $(this).attr("id"))
+    })
+</script>

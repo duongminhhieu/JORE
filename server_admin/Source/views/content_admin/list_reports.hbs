@@ -1,0 +1,115 @@
+<div id="content_home_admin">
+    <div id="text_recruitment_efficiency">Số lượng tin tuyển dụng: {{length}}</div>
+    <table id="table_mamage_recruit" style="table-layout:fixed; width: 1333px;" rules="rows">
+        <tr class="title_table_recruit">
+            <th style="width: 5%;">
+                STT</th>
+            <th style="text-align: left; width: 15%;">
+                Người báo cáo</th>
+            <th style="text-align: left; width: 25%;">
+                Tin bị báo cáo</th>
+            <th style="text-align: left; width: 40%;">
+                Mô tả báo cáo</th>
+            <th style="text-align: left;">
+                Tình trạng</th>
+        </tr>
+    </table>
+
+    <nav aria-label="Page navigation example" id="nav_page_home_manage_recruit">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="modal fade" id="modal_report_recruitment" tabindex="-1" aria-labelledby="modal_updateLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title" id="exampleModalLabel">Báo cáo:&nbsp;<span
+                            id="name_job_modal_apply_company">{{data.recruitment.title}}</span> </span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/admin/post_list_reports" method="POST">
+                    <div class="modal-body modal_body_evaluate">
+                        <div id="text_content_modal_report">Nội dung báo cáo:</div>
+                        <textarea name="content" class="form-control" id="content_report"></textarea>
+                        <input type="text" name="id_recruitments" value="{{data.idDocRecruitment}}"
+                            style="display: none;">
+                             <div class="modal-footer">
+                          <button type="submit" id="approved_modal_report" class="btn btn-primary" >Duyệt</button>
+                        <button type="submit" id="denied_modal_report"  class="btn btn-secondary" >Từ chối duyệt</button>
+                    </div>
+             
+
+                        <input type="hidden" id="id_report_hidden" name="id_report" value="">
+                        <input type="hidden" id="status_report_hidden" name="status_report" value="">
+                        <input type="hidden" id="list_reports_hidden" name="list_reports" value="">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const _list_reports = {{{ data.list_reports }}}
+
+    for (let i = 0; i < _list_reports.length; i++) {
+        let _status = "Chưa được xử lý"
+        if (_list_reports[i].status == "approved") {
+            _status = "Đã duyệt"
+        } else if (_list_reports[i].status == "denied") {
+            _status = "Từ chối duyệt"
+        }
+
+        $("#table_mamage_recruit").append(`
+            <tr id="${_list_reports[i].id_report}|||index:${i}" class="row_report">
+                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${i + 1}</td>
+                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; ">${_list_reports[i].reporter_name}</td>
+                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; ">${_list_reports[i].reported_title}</td>
+                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; ">${_list_reports[i].description}</td>
+                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left;">${_status}</td>
+            </tr>
+        `)
+        $("#content_home_admin").append(`
+            <button type="button" id="btn_modal_${_list_reports[i].id_report}" data-bs-toggle="modal" data-bs-target="#modal_report_recruitment" hidden></button>
+        `)
+    }
+
+    $(".row_report").click(function () {
+        const _id_report_index = $(this).attr("id").split("|||index:")
+
+        $("#name_job_modal_apply_company").html(_list_reports[parseInt(_id_report_index[1])].reported_title)
+        $("#content_report").text(_list_reports[parseInt(_id_report_index[1])].description)
+
+        $("#id_report_hidden").val(_id_report_index[0])
+        if (_list_reports[parseInt(_id_report_index[1])].status != "pending") {
+            $("#approved_modal_report").hide()
+            $("#denied_modal_report").hide()
+        }
+
+        $(`#btn_modal_${_id_report_index[0]}`).click()
+    })
+
+    $("#approved_modal_report").click(function () {
+        $("#status_report_hidden").val("approved")
+    })
+    $("#denied_modal_report").click(function () {
+        $("#status_report_hidden").val("denied")
+    })
+</script>

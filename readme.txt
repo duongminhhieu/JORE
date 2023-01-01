@@ -14,3 +14,6 @@ THÔNG TIN NHÓM:
 
 MỤC ĐÍCH CỦA THƯ MỤC:
 	Dùng để lưu mã nguồn.
+
+	link employer: https://employers-jore.onrender.com/
+	link candidates: https://jore.onrender.com/

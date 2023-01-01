@@ -5,8 +5,7 @@
 
 
 
-        <form method="post" action="/auth/signup" class="needs-validation"
-            oninput='confirm_password_signin.setCustomValidity(confirm_password_signin.value != password_signin.value ? "Mật khẩu nhập lại không đúng !" : "")'>
+        <form method="post" action="/auth/signup" class="needs-validation" id="formSignUp">
 
             {{#if message}}
             <div class="alert alert-success mt-2">
@@ -49,3 +48,23 @@
         </div>
     </div>
 </div>
+
+
+<script>
+
+    const confirm_password_signin = $('#confirm_password_signin');
+    const password_signin = $('#password_signin');
+    $("#formSignUp").on('input', function () {
+
+        confirm_password_signin.get(0).setCustomValidity(confirm_password_signin.val() != password_signin.val() ? "Mật khẩu nhập lại không đúng !" : "")
+
+        if (password_signin.val().length < 8) password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất 8 ký tự!");
+        else if (!/\d/.test(password_signin.val())) password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
+        else if (!/[a-zA-Z]/.test(password_signin.val())) password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
+        else if (!/[\W]/.test(password_signin.val())) password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
+        else password_signin.get(0).setCustomValidity('');
+
+    })
+
+
+</script>

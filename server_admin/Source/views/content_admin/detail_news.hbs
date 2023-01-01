@@ -94,7 +94,7 @@
     <div class="header_company_detail_job_recruit">
         <img src="{{news.avatar}}" alt="logo_company_recruit" class="logo_company_detail_job_recruit">
         <div class="name_job_detail_job">{{news.title}}</div>
-        <div class="name_company_detail_job" onclick="window.location.href='http://localhost:3035/admin/manage_account/detail_account?id={{news.belong_employer}}&&type=employer'">{{news.nameEmployer}}</div>
+        <div class="name_company_detail_job" onclick="window.location.href='/admin/manage_account/detail_account?id={{news.belong_employer}}&&type=employer'">{{news.nameEmployer}}</div>
         <img src="/css/style/image/ic_time.svg" alt="ic_time" class="ic_time_detail_job">
         <div class="deadline_submit_record_detail_job">Hạn nộp hồ sơ: {{news.due_date}} </div>
         <img src="/css/style/image/ic_calendar.svg" alt="ic_calendar" class="ic_calendar_detail_job">
@@ -151,7 +151,7 @@
         <div id="rectangle_share_recruit_detail_job">
             <div id="text_share_recuit_detail_job">Chia sẻ tin tuyển dụng</div>
             <div id="text_copy_link_detail_job">Sao chép đường dẫn</div>
-            <input type="text" value="http://localhost:3035/admin/manage_news/detail_news?id={{news.id}}" 
+            <input type="text" value="/admin/manage_news/detail_news?id={{news.id}}" 
                 name="link_detail_job" id="link_detail_job">
 
             <div id="circle_copy_link_detail_job" onclick="share_link()">

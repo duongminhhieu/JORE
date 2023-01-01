@@ -74,7 +74,7 @@
         for (let i = 0; i < _list_news.length; i++) {
 
             $("#table_mamage_recruit").append(`
-            <tr class="row_body" onclick="window.location.href='http://localhost:3035/admin/manage_news/detail_news?id=${_list_news[i].doc}'">
+            <tr class="row_body" onclick="window.location.href='/admin/manage_news/detail_news?id=${_list_news[i].doc}'">
                 <td ">${_list_news[i].stt}</td>
                 <td ">${_list_news[i].title}</td>
                 <td  ">${_list_news[i].nameEmployer}</td>

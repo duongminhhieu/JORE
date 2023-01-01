@@ -220,7 +220,7 @@ class Candidate {
         var evaluate = { belong_candidate, description, star };
         console.log(id_employer);
         const rs = await candidateModel.addReviews(evaluate, id_employer);
-        return res.redirect('http://localhost:3032/candidate/profile_employer?id='+id_employer);
+        return res.redirect('/candidate/profile_employer?id='+id_employer);
     }
     async report_recruitment(req, res, next) {
         var id_reporter = req.session.passport.user.id;

@@ -60,7 +60,7 @@
         <img src="{{data.belongEmployer.avatar}}" alt="logo_company" class="logo_company_detail_job">
         <div class="name_job_detail_job">{{data.recruitment.title}}</div>
         <a class="name_company_detail_job"
-            href="http://localhost:3032/candidate/profile_employer?id={{data.belongEmployer.idEmployer}}">{{data.belongEmployer.name}}</a>
+            href="/candidate/profile_employer?id={{data.belongEmployer.idEmployer}}">{{data.belongEmployer.name}}</a>
         <img src="/css/style/image/ic_time.svg" alt="ic_time" class="ic_time_detail_job">
         <div class="deadline_submit_record_detail_job">Hạn nộp hồ sơ: {{data.recruitment.due_date}}</div>
 
@@ -112,7 +112,7 @@
         <div id="rectangle_share_recruit_detail_job">
             <div id="text_share_recuit_detail_job">Chia sẻ tin tuyển dụng</div>
             <div id="text_copy_link_detail_job">Sao chép đường dẫn</div>
-            <input type="text" value="http://localhost:3032/candidate/detail_job/{{idDocRecruitment}}" disabled
+            <input type="text" value="/candidate/detail_job/{{idDocRecruitment}}" disabled
                 name="link_detail_job" id="link_detail_job">
 
             <div id="circle_copy_link_detail_job">

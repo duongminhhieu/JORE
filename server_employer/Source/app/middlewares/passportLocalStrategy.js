@@ -30,11 +30,15 @@ module.exports = (app) => {
         try {
           const user = await employerModel.getEmployerByEmail(email);
           if (!user) {
-            return done(null, false);
+            return done(null, false,  req.flash('messageDanger', 'Sai tài khoản hoặc mật khẩu!'));
           }
 
-          if(!user.verify || user.status !== 'approved') {
-            return done(null, false)
+          if(!user.verify){
+            return done(null, false,  req.flash('messageDanger', 'Tài khoản chưa được xác thực! Hãy vào email để xác thực'))
+          }
+
+          if(user.status !== 'approved') {
+            return done(null, false,  req.flash('messageDanger', 'Tài khoản chưa được JORE xác thực! Hãy đợi Jore xác thực nhé!'))
           }
 
           const cmp = await bcrypt.compare(password, user.password);

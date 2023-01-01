@@ -35,6 +35,7 @@ module.exports = {
     var user = null;
     snapshot.forEach((doc) => {
       user = doc.data();
+      user.id = doc.id;
     });
 
     return user;
@@ -58,6 +59,7 @@ module.exports = {
     var user = null;
     snapshot.forEach((doc) => {
       user = doc.data();
+      user.id = doc.id;
     });
 
     return user;
@@ -102,6 +104,14 @@ module.exports = {
     list.forEach((doc) => {
       user = doc.data();
       user.doc = doc.id;
+      if (user.experience == "0") {
+        user.experience = "Không yêu cầu"
+      }
+      else {
+        user.experience = "Ít nhất " + user.experience;
+
+
+      }
       listJob.push(user);
     });
     for (let i = 0; i < listJob.length - 1; i++) {
@@ -183,8 +193,15 @@ module.exports = {
   getDetailRecruitment: async (id_recruitment) => {
     const recruitments_collection = db.collection("recruitments");
     const recruitment = await recruitments_collection.doc(id_recruitment).get();
-
-    return recruitment.data();
+    var rs=recruitment.data();
+    if(rs.experience=="0")
+    {
+      rs.experience="Không yêu cầu";
+    }
+    else{
+      rs.experience="Ít nhất " + rs.experience;
+    }
+    return rs;
   },
   getCVByID: async (id) => {
     const curriculum_vitaes_collection = db.collection("curriculum_vitaes");
@@ -220,9 +237,10 @@ module.exports = {
     list.forEach((doc) => {
       job = doc.data();
       job.doc = doc.id;
-
-      var arr = job.experience.split(" ");
-      job.experience = arr[0].toString();
+      if (job.experience != "0") {
+        var arr = job.experience.split(" ");
+        job.experience = arr[0].toString();
+      }
 
       listJob.push(job);
     });
@@ -242,16 +260,27 @@ module.exports = {
       if (!listJob[i].title.includes(data.search)) {
         check = false;
       }
-      if (code_province != "0") {
+      if (code_province != 0) {
         if (listJob[i].code_province != code_province) {
           check = false;
         }
       }
-      if (!listJob[i].working_form.includes(data.select_method_work)) {
+      if (data.select_method_work != "all") {
+        if (!listJob[i].working_form.includes(data.select_method_work)) {
+          check = false;
+        }
+      }
+
+      if (parseInt(data.select_experience) < parseInt(listJob[i].experience)) {
         check = false;
       }
-      if (data.select_experience < listJob[i].experience) {
-        check = false;
+      else {
+        if (parseInt(listJob[i].experience) == 0) {
+          listJob[i].experience = "Không cần";
+        }
+        else {
+          listJob[i].experience = "Ít nhất " + listJob[i].experience + " năm";
+        }
       }
       if (data.select_salary > listJob[i].max_salary) {
         check = false;
@@ -263,14 +292,24 @@ module.exports = {
 
     return listRS;
   },
+  
   addReviews: async (e, id_employer) => {
     const collection_reviews = await db.collection("reviews");
-
+    var rating=parseFloat(e.star);
+    const collection_employer = await db.collection("employers").doc(id_employer).get();
+    var rs=collection_employer.data();
+    console.log(rs);
+    rating=(parseFloat(rs.rating)*rs.list_reviews.length+rating)/(rs.list_reviews.length+1);
+    rating=rating.toFixed(1);
+    console.log(rating);
+    rating=parseFloat(rating);
+    
     collection_reviews.add(e)
       .then(function (docRef) {
 
         db.collection("employers").doc(id_employer).update({
-          list_reviews: FieldValue.arrayUnion(docRef.id)
+          list_reviews: FieldValue.arrayUnion(docRef.id),
+          rating: rating
         });
       });
 
@@ -286,30 +325,79 @@ module.exports = {
 
     return 1;
   },
-  profile: async id =>{
-    const collection_candidate=await db.collection("candidates");
-    const profile=await collection_candidate.doc(id).get();
-    var rs= profile.data();
-    if(rs.address=="")
-    {
-      rs.address="Chưa có";
+  profile: async id => {
+    const collection_candidate = await db.collection("candidates");
+    const profile = await collection_candidate.doc(id).get();
+    var rs = profile.data();
+    if (rs.address == "") {
+      rs.address = "Chưa có";
     }
-    if(rs.phone=="")
-    {
-      rs.phone="Chưa có";
+    if (rs.phone == "") {
+      rs.phone = "Chưa có";
     }
-    if(rs.gender=="")
-    {
-      rs.gender="Chưa có";
+    if (rs.gender == "") {
+      rs.gender = "Chưa có";
     }
-    if(rs.date_of_birth==null)
-    {
-      rs.date_of_birth="Chưa có";
+    if (rs.date_of_birth == null) {
+      rs.date_of_birth = "Chưa có";
     }
-    else{
-      rs.date_of_birth=new Date(rs.date_of_birth.toDate().toDateString()).toLocaleString("VN");
+    else {
+      rs.date_of_birth = new Date(rs.date_of_birth.toDate().toDateString()).toLocaleString("VN");
     }
-    
+
     return rs;
+  },
+  async updateInfoCandidate(id_candidate, candidate, fileAvatar) {
+    var signedURLArray = null;
+    if (fileAvatar) {
+      const fileName = 'candidate_' + id_candidate + path.extname(fileAvatar.originalname);
+      // await storage.bucket().file(`avatars/${fileName}`).delete();
+      await storage.bucket().file(`avatars/${fileName}`).createWriteStream().end(fileAvatar.buffer);
+
+      const file = storage.bucket().file(`avatars/${fileName}`);
+      const signedURLconfig = { action: "read", expires: "01-01-2030" };
+      signedURLArray = await file.getSignedUrl(signedURLconfig);
+    }
+    // console.log(signedURLArray);
+    const doc = db.collection("candidates").doc(id_candidate);
+    // console.log(doc, fileAvatar, signedURLArray);
+
+    // console.log(candidate);
+    const rs = doc.update({
+      avatar: signedURLArray ? signedURLArray[0] : (await doc.get()).data().avatar,
+      phone: candidate.phone,
+      date_of_birth: new Date(candidate.date_of_birth),
+      gender: candidate.gender,
+      address: candidate.address,
+    });
+
+    return rs;
+  },
+  async changePassword(id_candidate, newPassword) {
+    const doc = db.collection("candidates").doc(id_candidate);
+    // console.log(doc, fileAvatar, signedURLArray);
+    const rs = doc.update({
+      password: newPassword,
+    });
+
+    return rs;
+  },
+  getStar: async id =>{
+    const doc = await db.collection("reviews").doc(id).get();
+    var rs=doc.data();
+
+    // console.log(doc, fileAvatar, signedURLArray);
+
+    return rs.star;
+  },
+  updateView: async id =>{
+    const doc = await db.collection("recruitments").doc(id);
+    const view=(await doc.get()).data();
+    var newView=parseInt(view.views)+1;
+    
+    // console.log(doc, fileAvatar, signedURLArray);
+    const rs = doc.update({
+      views: newView,
+    });
   }
 };

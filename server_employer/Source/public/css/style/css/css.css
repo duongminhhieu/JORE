@@ -5277,6 +5277,8 @@ tr:nth-child(odd) {
 .ic_avatar_evaluate {
   position: absolute;
   top: 0px;
+  height: 40px;
+  width: 40px;
   left: 15px;
 }
 .name_candidate_evaluate {

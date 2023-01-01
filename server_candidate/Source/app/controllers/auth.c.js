@@ -70,7 +70,7 @@ class Authencation {
 
     // [POST] /signup
     async postSignup(req, res, next) {
-
+        console.log(1);
         const name = req.body.name;
         const email = req.body.email;
         const password = req.body.password;

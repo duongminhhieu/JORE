@@ -6264,3 +6264,7 @@ color: #FFFFFF;
     
     color: #BBBCC0;
 }
+.row_body:hover{
+    cursor: pointer;
+    transform:  scaleY(1.1);
+}

@@ -72,7 +72,7 @@
         for (let i = 0; i < _list_account.length; i++) {
 
             $("#table_mamage_recruit").append(`
-            <tr class="row_body" onclick="window.location.href='http://localhost:3035/admin/manage_account/detail_account?id=${_list_account[i].doc}&&type=${_list_account[i].type}'">
+            <tr class="row_body" onclick="window.location.href='/admin/manage_account/detail_account?id=${_list_account[i].doc}&&type=${_list_account[i].type}'">
                 <td ">${_list_account[i].stt}</td>
                 <td ">${_list_account[i].name}</td>
                 <td  ">${_list_account[i].email}</td>

@@ -5533,3 +5533,7 @@ color: #FFFFFF;
   
   color: #BBBCC0;
 }
+.table_item:hover{
+  cursor: pointer;
+  transform:  scaleY(1.1);
+}

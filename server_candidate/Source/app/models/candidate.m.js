@@ -146,9 +146,16 @@ module.exports = {
     curriculumVitae.file_cv = signedURLArray[0];
 
     const curriculumVitaeCollection = db.collection("curriculum_vitaes");
-    const rs = curriculumVitaeCollection.add(curriculumVitae);
+    curriculumVitaeCollection.add(curriculumVitae)
+      .then(function (docRef) {
 
-    return rs;
+        // them vao list_cv
+        db.collection('recruitments').doc(curriculumVitae.id_recruitment).update({
+          list_cvs: FieldValue.arrayUnion(docRef.id),
+        })
+      })
+
+    return 1;
   },
   checkApplied: async (id_recruitment, id_candidate) => {
 
@@ -193,13 +200,12 @@ module.exports = {
   getDetailRecruitment: async (id_recruitment) => {
     const recruitments_collection = db.collection("recruitments");
     const recruitment = await recruitments_collection.doc(id_recruitment).get();
-    var rs=recruitment.data();
-    if(rs.experience=="0")
-    {
-      rs.experience="Không yêu cầu";
+    var rs = recruitment.data();
+    if (rs.experience == "0") {
+      rs.experience = "Không yêu cầu";
     }
-    else{
-      rs.experience="Ít nhất " + rs.experience;
+    else {
+      rs.experience = "Ít nhất " + rs.experience;
     }
     return rs;
   },
@@ -292,18 +298,18 @@ module.exports = {
 
     return listRS;
   },
-  
+
   addReviews: async (e, id_employer) => {
     const collection_reviews = await db.collection("reviews");
-    var rating=parseFloat(e.star);
+    var rating = parseFloat(e.star);
     const collection_employer = await db.collection("employers").doc(id_employer).get();
-    var rs=collection_employer.data();
+    var rs = collection_employer.data();
     console.log(rs);
-    rating=(parseFloat(rs.rating)*rs.list_reviews.length+rating)/(rs.list_reviews.length+1);
-    rating=rating.toFixed(1);
+    rating = (parseFloat(rs.rating) * rs.list_reviews.length + rating) / (rs.list_reviews.length + 1);
+    rating = rating.toFixed(1);
     console.log(rating);
-    rating=parseFloat(rating);
-    
+    rating = parseFloat(rating);
+
     collection_reviews.add(e)
       .then(function (docRef) {
 
@@ -382,19 +388,19 @@ module.exports = {
 
     return rs;
   },
-  getStar: async id =>{
+  getStar: async id => {
     const doc = await db.collection("reviews").doc(id).get();
-    var rs=doc.data();
+    var rs = doc.data();
 
     // console.log(doc, fileAvatar, signedURLArray);
 
     return rs.star;
   },
-  updateView: async id =>{
+  updateView: async id => {
     const doc = await db.collection("recruitments").doc(id);
-    const view=(await doc.get()).data();
-    var newView=parseInt(view.views)+1;
-    
+    const view = (await doc.get()).data();
+    var newView = parseInt(view.views) + 1;
+
     // console.log(doc, fileAvatar, signedURLArray);
     const rs = doc.update({
       views: newView,

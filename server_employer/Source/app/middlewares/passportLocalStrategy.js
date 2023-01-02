@@ -30,7 +30,7 @@ module.exports = (app) => {
         try {
           const user = await employerModel.getEmployerByEmail(email);
           if (!user) {
-            return done(null, false,  req.flash('messageDanger', 'Sai tài khoản hoặc mật khẩu!'));
+            return done(null, false,  req.flash('messageDanger', 'Địa chỉ email hoặc mật khẩu không đúng!'));
           }
 
           if(!user.verify){
@@ -43,7 +43,7 @@ module.exports = (app) => {
 
           const cmp = await bcrypt.compare(password, user.password);
           if (!cmp) {
-            return done(null, false, req.flash('messageDanger', 'Sai tài khoản hoặc mật khẩu!'));
+            return done(null, false, req.flash('messageDanger', 'Địa chỉ email hoặc mật khẩu không đúng!'));
           }
           return done(null, user);
         } catch (error) {

@@ -6,10 +6,22 @@
 
         <form method="post" action="/auth/signup" class="needs-validation" id="formSignUp">
 
-           
+            {{#if message}}
+            <div class="alert alert-success mt-2 mx-4">
+                {{message}}
+            </div>
+            {{/if}}
 
-            <div class="alert alert-danger mt-2" hidden>
-Đăng nhập sai  </div>
+            {{#if messageDanger}}
+            <div class="alert alert-danger mt-2 mx-4">
+                {{messageDanger}}
+            </div>
+            {{/if}}
+
+            <div class="alert alert-danger mt-3 mx-4 announcement" style="display:none">
+                Đăng nhập sai </div>
+            <div class="alert alert-success mt-3 mx-4 announcement-success" style="display:none">
+                Mật khẩu hợp lệ ! </div>
 
             <div id="label_fullname">Họ và tên</div>
             <input type="text" name="name" id="fullname_signin" required placeholder="Nhập họ và tên của bạn">
@@ -22,6 +34,7 @@
             <div id="label_password_signin">Mật khẩu</div>
             <input type="password" name="password" id="password_signin" required placeholder="Nhập mật khẩu">
             <img src="/css/style/image/logo_password.svg" id="logo_password_signin" alt="logo_password_signin">
+
             {{!-- <img src="/css/style/image/eye-slash.svg" id="eye_slash_signin" alt="eye_slash_signin"> --}}
 
             <div id="label_confirm_password_signin">Xác nhận mật khẩu</div>
@@ -48,15 +61,76 @@
     const password_signin = $('#password_signin');
     $("#formSignUp").on('input', function () {
 
-        confirm_password_signin.get(0).setCustomValidity(confirm_password_signin.val() != password_signin.val() ? "Mật khẩu nhập lại không đúng !" : "")
+        if (password_signin.val().length < 8) {
+            password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất 8 ký tự!");
+            $('.announcement').text("Mật khẩu phải có ít nhất 8 ký tự!");
+            $('.announcement').show();
+        }
+        else if (!/\d/.test(password_signin.val())) {
+            password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
+            $('.announcement').text("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
+            $('.announcement').show();
+        }
+        else if (!/[a-zA-Z]/.test(password_signin.val())) {
+            password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
+            $('.announcement').text("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
+            $('.announcement').show();
+        }
+        else if (!/[\W]/.test(password_signin.val())) {
+            password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
+            $('.announcement').text("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
+            $('.announcement').show();
+        } else if (confirm_password_signin.val() != password_signin.val()) {
+            confirm_password_signin.get(0).setCustomValidity("Mật khẩu nhập lại không đúng !");
+            $('.announcement').text("Mật khẩu nhập lại không đúng !");
+            $('.announcement').show();
+        }
+        else {
+            password_signin.get(0).setCustomValidity('');
+            confirm_password_signin.get(0).setCustomValidity('');
+            $('.announcement').hide();
+            $('.announcement-success').show();
+        }
 
-        if (password_signin.val().length < 8) password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất 8 ký tự!");
-        else if (!/\d/.test(password_signin.val())) password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
-        else if (!/[a-zA-Z]/.test(password_signin.val())) password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
-        else if (!/[\W]/.test(password_signin.val())) password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
-        else password_signin.get(0).setCustomValidity('');
+
 
     })
 
+
+
+
+
+
+
+    /*
+     confirm_password_signin.get(0).setCustomValidity(confirm_password_signin.val() != password_signin.val() ? "Mật khẩu nhập lại không đúng !" : "")
+    
+    
+            if (password_signin.val().length < 8) {
+                password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất 8 ký tự!");
+                $('.announcement').text("Mật khẩu phải có ít nhất 8 ký tự!");
+                $('.announcement').show();
+            }
+            else if (!/\d/.test(password_signin.val())) {
+                password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
+                $('.announcement').text("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
+                $('.announcement').show();
+            }
+            else if (!/[a-zA-Z]/.test(password_signin.val())) {
+                password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
+                $('.announcement').text("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
+                $('.announcement').show();
+            }
+            else if (!/[\W]/.test(password_signin.val())) {
+                password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
+                $('.announcement').text("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
+                $('.announcement').show();
+            }
+            else {
+                password_signin.get(0).setCustomValidity('');
+                $('.announcement').hide()
+            }
+    
+    */
 
 </script>

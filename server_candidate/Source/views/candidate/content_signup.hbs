@@ -24,21 +24,21 @@
                 Mật khẩu hợp lệ ! </div>
 
             <div id="label_fullname">Họ và tên</div>
-            <input type="text" name="name" id="fullname_signin" required placeholder="Nhập họ và tên của bạn">
+            <input type="text" name="name" id="fullname_signin" placeholder="Nhập họ và tên của bạn">
             <img src="/css/style/image/ic_person.svg" id="logo_person" alt="logo_person">
 
             <div id="label_email_signin">Email</div>
-            <input type="email" name="email" id="email_signin" required placeholder="Nhập email của bạn">
+            <input type="email" name="email" id="email_signin" placeholder="Nhập email của bạn">
             <img src="/css/style/image/logo_email.svg" id="logo_email_signin" alt="logo_email_signin">
 
             <div id="label_password_signin">Mật khẩu</div>
-            <input type="password" name="password" id="password_signin" required placeholder="Nhập mật khẩu">
+            <input type="password" name="password" id="password_signin" placeholder="Nhập mật khẩu">
             <img src="/css/style/image/logo_password.svg" id="logo_password_signin" alt="logo_password_signin">
 
             {{!-- <img src="/css/style/image/eye-slash.svg" id="eye_slash_signin" alt="eye_slash_signin"> --}}
 
             <div id="label_confirm_password_signin">Xác nhận mật khẩu</div>
-            <input type="password" name="confirm_password_signin" id="confirm_password_signin" required
+            <input type="password" name="confirm_password_signin" id="confirm_password_signin"
                 placeholder="Nhập lại mật khẩu">
             <img src="/css/style/image/logo_password.svg" id="logo_confirm_password_signin"
                 alt="logo_confirm_password_signin">
@@ -57,10 +57,34 @@
 
 <script>
 
-    const confirm_password_signin = $('#confirm_password_signin');
-    const password_signin = $('#password_signin');
     $("#formSignUp").on('submit', function (e) {
-        if (password_signin.val().length < 8) {
+
+        const email_signin = $('#email_signin');
+
+        const fullname_signin = $('#fullname_signin');
+
+        const confirm_password_signin = $('#confirm_password_signin');
+        const password_signin = $('#password_signin');
+        if (fullname_signin.val().length == 0) {
+            $('.announcement').text("Bạn chưa nhập họ tên!");
+            $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
+        }
+        else if (email_signin.val().length == 0) {
+            $('.announcement').text("Bạn chưa nhập email!");
+            $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
+        }
+        else if (password_signin.val().length == 0) {
+            // password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất 8 ký tự!");
+            $('.announcement').text("Bạn chưa nhập mật khẩu!");
+            $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
+        }
+        else if (password_signin.val().length < 8) {
             // password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất 8 ký tự!");
             $('.announcement').text("Mật khẩu phải có ít nhất 8 ký tự!");
             $('.announcement').show();
@@ -91,7 +115,15 @@
             e.preventDefault();
 
 
-        } else if (confirm_password_signin.val() != password_signin.val()) {
+        }
+        else if (confirm_password_signin.val().length == 0) {
+            $('.announcement').text("Chưa nhập xác nhận mật khẩu!");
+            $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
+
+        }
+        else if (confirm_password_signin.val() != password_signin.val()) {
             // confirm_password_signin.get(0).setCustomValidity("Mật khẩu nhập lại không đúng !");
             $('.announcement').text("Mật khẩu nhập lại không đúng !");
             $('.announcement').show();
@@ -108,7 +140,7 @@
 
 
 
-    })
+    });
 
 
 

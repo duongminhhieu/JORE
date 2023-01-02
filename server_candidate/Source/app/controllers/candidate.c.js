@@ -44,7 +44,7 @@ class Candidate {
                         idDocRecruitment: idDocRecruitment,
                         isApplied: checkApplied,
                     },
-                    not_record: true,
+                    not_record: false,
                 });
             } else {
                 res.redirect("/auth/login");

@@ -6068,4 +6068,111 @@ color: #00B4D8;
     margin-left: 50px;
 
   }
-  
+  #about_us{
+    position: absolute;
+left: 55.99%;
+right: 30.33%;
+top: 11.21%;
+bottom: 78.17%;
+
+font-family: 'Poppins', sans-serif;
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 36px;
+/* identical to box height */
+
+
+color: #FFFFFF;
+
+}
+#leadership_team{
+    position: absolute;
+    left: 55.99%;
+    right: 30.94%;
+    top: 28%;
+    bottom: 50.15%;
+    
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+    /* identical to box height */
+    
+    
+    color: #BBBCC0;
+}
+#blog{
+    position: absolute;
+    left: 55.99%;
+    right: 30.94%;
+    top: 39%;
+    bottom: 50.15%;
+    
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+    /* identical to box height */
+    
+    
+    color: #BBBCC0;
+}
+#terms_of_use{
+    position: absolute;
+    left: 55.99%;
+    right: 30.94%;
+    top: 50%;
+    bottom: 50.15%;
+    
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+    /* identical to box height */
+    
+    
+    color: #BBBCC0;
+}
+#facebook{
+    position: absolute;
+    left: 70.99%;
+    top: 12%;
+}
+#text_version_footer {
+    position: absolute;
+    left: 70.99%;
+    right: 10%;
+    top: 39%;
+    bottom: 50.15%;
+    
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+    /* identical to box height */
+    
+    
+    color: #9fa0a3;
+}
+#contact_footer{
+    position: absolute;
+    left: 70.99%;
+    right: 10%;
+    top: 26%;
+    bottom: 50.15%;
+    
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+    /* identical to box height */
+    
+    
+    color: #BBBCC0;
+}

@@ -129,6 +129,7 @@ class Candidate {
                 const id_candidate = await candidateModel.getIDDocumentCandidates(user.email);
                 curriculumVitae = { id_candidate, ...curriculumVitae };
                 curriculumVitae.status = "pending";
+                curriculumVitae.submit_date = new Date();
                 const uploadCv = await candidateModel.uploadCurriculumVitae(curriculumVitae, req.file);
 
                 res.redirect("back");

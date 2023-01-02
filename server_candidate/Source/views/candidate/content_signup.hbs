@@ -59,35 +59,49 @@
 
     const confirm_password_signin = $('#confirm_password_signin');
     const password_signin = $('#password_signin');
-    $("#formSignUp").on('input', function () {
-
+    $("#formSignUp").on('submit', function (e) {
         if (password_signin.val().length < 8) {
-            password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất 8 ký tự!");
+            // password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất 8 ký tự!");
             $('.announcement').text("Mật khẩu phải có ít nhất 8 ký tự!");
             $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
         }
         else if (!/\d/.test(password_signin.val())) {
-            password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
+            //password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
             $('.announcement').text("Mật khẩu phải có ít nhất một số (1, 2, ...)!");
             $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
+
         }
         else if (!/[a-zA-Z]/.test(password_signin.val())) {
-            password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
+            // password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
             $('.announcement').text("Mật khẩu phải có ít nhất một ký tự chữ cái (a, b, C, D, ...)!");
             $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
+
         }
         else if (!/[\W]/.test(password_signin.val())) {
-            password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
+            //password_signin.get(0).setCustomValidity("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
             $('.announcement').text("Mật khẩu phải có ít nhất một ký tự đặt biệt (@, $, ...)!");
             $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
+
+
         } else if (confirm_password_signin.val() != password_signin.val()) {
-            confirm_password_signin.get(0).setCustomValidity("Mật khẩu nhập lại không đúng !");
+            // confirm_password_signin.get(0).setCustomValidity("Mật khẩu nhập lại không đúng !");
             $('.announcement').text("Mật khẩu nhập lại không đúng !");
             $('.announcement').show();
+            $('.announcement-success').hide();
+            e.preventDefault();
+
         }
         else {
-            password_signin.get(0).setCustomValidity('');
-            confirm_password_signin.get(0).setCustomValidity('');
+            // password_signin.get(0).setCustomValidity('');
+            // confirm_password_signin.get(0).setCustomValidity('');
             $('.announcement').hide();
             $('.announcement-success').show();
         }

@@ -2797,7 +2797,7 @@ pre {
 }
 
 #introduce_company_detail_job {
-  margin-left: 131px;
+  margin-left: 35px;
   margin-top: 159px;
   width: 600px;
   font-family: "Poppins", sans-serif;
@@ -5022,7 +5022,7 @@ tr:nth-child(odd) {
 }
 #name_candidate_recruit {
   position: absolute;
-  width: 241px;
+  /* width: 241px; */
   height: 45px;
   left: 330px;
   top: 40px;

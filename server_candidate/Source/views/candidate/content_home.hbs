@@ -33,12 +33,16 @@
     <option value="0" class="op_select_salary_work" selected>Mức lương</option>
   </select>
   <img src="/css/style/image/arrow_down.svg" alt="arrow_down" id="arrow_down_salary_work">
-  <button id="btn_search_candidate" onclick="search()">Tìm kiếm</button>
+  <button id="btn_search_candidate" onclick="search()">
+    <span id="spinner" class="spinner-border spinner-border-sm visually-hidden" role="status" aria-hidden="true"></span>
+    <span id="btn_search_text">Tìm kiếm</span>
+  </button>
 </div>
 <div class="rectangle_mid_2_candidate">
   <div class="rectangle_content_job_search">
     <div id="text_number_job_searched" class="text_top_job">Top công việc được quan tâm nhất</div>
-    <div id="text_number_job_searched" class="text_search_job">Tìm thấy <div id="number_job_searched"></div> công việc phù hợp với yêu
+    <div id="text_number_job_searched" class="text_search_job">Tìm thấy <div id="number_job_searched"></div> công việc
+      phù hợp với yêu
       cầu
       của bạn.</div>
 
@@ -95,7 +99,7 @@
 
 </script>
 <script>
-          $(".text_search_job").hide();
+  $(".text_search_job").hide();
 
   var _list_job = {{{ data.listjob }}};
   var numbers = [];
@@ -158,6 +162,11 @@
     }
   }
   function search() {
+
+    $('#btn_search_text').addClass('visually-hidden');
+    $('#spinner').removeClass('visually-hidden');
+    $('#btn_search_candidate').prop('disabled', true);
+
     $.ajax({
       url: '/candidate/search_job',
       type: 'POST',
@@ -232,6 +241,10 @@
         }
 
       }
+
+      $('#btn_search_text').removeClass('visually-hidden');
+      $('#spinner').addClass('visually-hidden');
+      $('#btn_search_candidate').prop('disabled', false);
 
     })
   }

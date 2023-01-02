@@ -102,11 +102,11 @@
                     <th>Ngày tạo tin</th>
                     <th>Hạn nộp nồ sơ</th>
                     <th>Lượt nộp</th>
-                    <th>Số báo cáo</th>
                     <th>Trạng thái tin</th>
                 </tr>
             `)
-            for (let i = (page - 1) * recruitments_per_page; i < page * recruitments_per_page; i++) {
+            let _count_page = (page * recruitments_per_page) < list_recruitments.length ? (page * recruitments_per_page) : list_recruitments.length
+            for (let i = (page - 1) * recruitments_per_page; i < _count_page; i++) {
                 let _date = new Date(list_recruitments[i].due_date._seconds * 1000);
                 let due_date = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear()
 
@@ -126,7 +126,7 @@
                 else {
                     _status = "Chờ duyệt"
                 }
-
+                console.log(list_recruitments[i].list_cvs.length)
                 $("#table_mamage_recruit").append(`
                     <tr id="${id_recruitments[i]}" class="table_item" onclick="viewRecruitment('${id_recruitments[i]}')">
                         <td>${i + 1}</td>
@@ -134,7 +134,6 @@
                         <td>${creation_date}</td>
                         <td>${due_date}</td>
                         <td>${list_recruitments[i].list_cvs.length}</td>
-                        <td>number reports</td>
                         <td>${_status}</td>
                     </tr>
                 `)

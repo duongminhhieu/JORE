@@ -5,24 +5,35 @@ const candidateModel = require("../models/candidate.m");
 class Candidate {
     async home(req, res, next) {
         try {
+            if (req.isAuthenticated()) {
                 var user = req.session.passport.user;
                 var topJob = await candidateModel.topJob(6);
                 res.render("candidate/content_home.hbs", {
                     layout: "main_candidate_login",
                     data: {
                         user: user,
-                        listjob:JSON.stringify(topJob),
+                        listjob: JSON.stringify(topJob),
                     },
-                    topJob:true,
+                    topJob: true,
                     not_record: false,
                 });
-         
+            } else {
+                var topJob = await candidateModel.topJob(6);
+                res.render("candidate/content_home.hbs", {
+                    layout: "main_candidate_not_login",
+                    data: {
+                        listjob: JSON.stringify(topJob),
+                    },
+                    topJob: true,
+                });
+            }
         } catch (error) {
             next(error);
         }
     }
     async detail_job(req, res, next) {
         try {
+            if (req.isAuthenticated()) {
                 var user = req.session.passport.user;
                 var idDocRecruitment = req.params.id;
                 await candidateModel.updateView(idDocRecruitment);
@@ -42,7 +53,22 @@ class Candidate {
                     },
                     not_record: false,
                 });
-          
+            } else {
+                var idDocRecruitment = req.params.id;
+                await candidateModel.updateView(idDocRecruitment);
+                var recruitment = await candidateModel.getRecruitment(idDocRecruitment);
+                var belongEmployer = await candidateModel.getEmployer(recruitment.belong_employer);
+
+                res.render("candidate/content_detail_job.hbs", {
+                    layout: "main_candidate_not_login",
+                    data: {
+                        recruitment: recruitment,
+                        belongEmployer: belongEmployer,
+                        idDocRecruitment: idDocRecruitment,
+                        isApplied: false,
+                    },
+                });
+            }
         } catch (error) {
             next(error);
         }
@@ -89,11 +115,11 @@ class Candidate {
         var listjob = await candidateModel.getAllRecruitment(req.body);
 
         var user = req.session.passport.user;
-         res.json({
+        res.json({
             success: true,
             list_job: listjob
         })
-        
+
     }
     async uploadCV(req, res, next) {
         try {
@@ -141,13 +167,14 @@ class Candidate {
     }
     async profile_employer(req, res, next) {
         try {
+            if (req.isAuthenticated()) {
                 var user = req.session.passport.user;
 
                 // get information of employer
                 const _id_employer = req.query.id;
                 const _info_employer = await candidateModel.getEmployer(_id_employer);
-                var total_rating=_info_employer.rating;
-                console.log("a",total_rating);
+                var total_rating = _info_employer.rating;
+                console.log("a", total_rating);
                 let _list_recruitments = [];
                 for (let i = 0; i < _info_employer.list_recruitments.length; i++) {
                     _list_recruitments.push(await candidateModel.getDetailRecruitment(_info_employer.list_recruitments[i]));
@@ -164,7 +191,28 @@ class Candidate {
                     },
                     total_rating
                 });
-         
+            } else {
+
+                // get information of employer
+                const _id_employer = req.query.id;
+                const _info_employer = await candidateModel.getEmployer(_id_employer);
+                var total_rating = _info_employer.rating;
+                console.log("a", total_rating);
+                let _list_recruitments = [];
+                for (let i = 0; i < _info_employer.list_recruitments.length; i++) {
+                    _list_recruitments.push(await candidateModel.getDetailRecruitment(_info_employer.list_recruitments[i]));
+                    _list_recruitments[i].id = _info_employer.list_recruitments[i];
+                }
+                res.render("candidate/content_profile_employer.hbs", {
+                    layout: "main_candidate_not_login",
+                    _id_employer,
+                    data: {
+                        info_employer: JSON.stringify(_info_employer),
+                        list_recruitments: JSON.stringify(_list_recruitments),
+                    },
+                    total_rating
+                });
+            }
         } catch (error) {
             next(error);
         }
@@ -197,32 +245,62 @@ class Candidate {
                     },
                 });
             } else {
-                res.redirect("/auth/login");
+
+                // get information of employer
+                const _id_employer = req.query.id;
+                const _info_employer = await candidateModel.getEmployer(_id_employer);
+                // console.log(_info_employer);
+                let _list_reviews = [];
+                for (let i = 0; i < _info_employer.list_reviews.length; i++) {
+                    _list_reviews.push(await candidateModel.getReviewByID(_info_employer.list_reviews[i]));
+                    _list_reviews[i].id = _info_employer.list_reviews[i];
+                }
+                var length = _list_reviews.length;
+
+                res.render("candidate/content_view_rating.hbs", {
+                    layout: "main_candidate_not_login",
+                    length,
+                    _id_employer,
+                    data: {
+                        list_reviews: JSON.stringify(_list_reviews),
+
+                    },
+                });
             }
         } catch (error) {
             next(error);
         }
     }
     async evaluate_employer(req, res, next) {
-        var star = req.body.star;
-        var belong_candidate = req.session.passport.user.id;
-        var id_employer = req.body.id_employer;
-        var description = req.body.content;
-        var evaluate = { belong_candidate, description, star };
-        console.log(id_employer);
-        const rs = await candidateModel.addReviews(evaluate, id_employer);
-        return res.redirect('/candidate/profile_employer?id='+id_employer);
+        if (req.isAuthenticated()) {
+            var star = req.body.star;
+            var belong_candidate = req.session.passport.user.id;
+            var id_employer = req.body.id_employer;
+            var description = req.body.content;
+            var evaluate = { belong_candidate, description, star };
+            console.log(id_employer);
+            const rs = await candidateModel.addReviews(evaluate, id_employer);
+            return res.redirect('/candidate/profile_employer?id=' + id_employer);
+        } else {
+            res.redirect("/auth/login");
+        }
     }
     async report_recruitment(req, res, next) {
-        var id_reporter = req.session.passport.user.id;
-        var id_reported = req.body.id_recruitments;
-        var description = req.body.content;
-        var status = "pending";
-        var type = "candidate";
-        var report = { description, id_reported, id_reporter, status, type };
-        console.log(id_reported);
-        const rs = await candidateModel.addReport(report);
-        res.redirect('back');
+        if (req.isAuthenticated()) {
+
+            var id_reporter = req.session.passport.user.id;
+            var id_reported = req.body.id_recruitments;
+            var description = req.body.content;
+            var status = "pending";
+            var type = "candidate";
+            var report = { description, id_reported, id_reporter, status, type };
+            console.log(id_reported);
+            const rs = await candidateModel.addReport(report);
+            res.redirect('back');
+
+        } else {
+            res.redirect("/auth/login");
+        }
     }
     async profile(req, res, next) {
         try {

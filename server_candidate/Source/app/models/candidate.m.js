@@ -260,10 +260,17 @@ module.exports = {
       console.log("code_a:", listJob[j].code_province)
     }
 
+
+    function removeAccents(str) {
+      return str.normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    }
+
     var listRS = [];
     for (let i = 0; i < listJob.length; i++) {
       var check = true;
-      if (!listJob[i].title.includes(data.search)) {
+      if (!(removeAccents(listJob[i].title).toUpperCase().indexOf(removeAccents(data.search).toUpperCase()) > -1)) {
         check = false;
       }
       if (code_province != 0) {

@@ -122,11 +122,18 @@ module.exports = {
     });
 
     for (let i = 0; i < list.length; i++) {
-      const employer = await employerCollection.doc(list[i].belong_employer).get();
-      list[i].nameEmployer = employer.data().name;
-      const numberCandidate = await cur_vit.where("id_recruitment", "==", list[i].doc);
-      const snapshot = await numberCandidate.count().get();
-      list[i].numberCV = snapshot.data().count;
+
+      try {
+        const employer = await employerCollection.doc(list[i].belong_employer).get();
+        list[i].nameEmployer = employer.data().name;
+        const numberCandidate = await cur_vit.where("id_recruitment", "==", list[i].doc);
+        const snapshot = await numberCandidate.count().get();
+        list[i].numberCV = snapshot.data().count;
+
+      } catch (error) {
+
+      }
+
     }
 
     return list;
@@ -185,15 +192,14 @@ module.exports = {
   },
   status_recruitment: async (id, type) => {
     await db.collection("recruitments").doc(id).update({ status: type });
-    const report_collection=db.collection("reports");
-    const report=await report_collection.where("id_reported", "==", id).get();
-    if(type=="deleted"||type=="locked")
-    {
+    const report_collection = db.collection("reports");
+    const report = await report_collection.where("id_reported", "==", id).get();
+    if (type == "deleted" || type == "locked") {
       report.forEach((doc) => {
         db.collection("reports").doc(doc.id).update({ status: "approved" });
       });
     }
-   
+
   },
 
   getAllReports: async () => {

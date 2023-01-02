@@ -112,10 +112,11 @@
         <div id="rectangle_share_recruit_detail_job">
             <div id="text_share_recuit_detail_job">Chia sẻ tin tuyển dụng</div>
             <div id="text_copy_link_detail_job">Sao chép đường dẫn</div>
-            <input type="text" value="/candidate/detail_job/{{idDocRecruitment}}" disabled
-                name="link_detail_job" id="link_detail_job">
+            <input type="text" disabled name="link_detail_job" id="link_detail_job">
 
-            <div id="circle_copy_link_detail_job">
+            <div id="circle_copy_link_detail_job" onclick="myFunction()">
+
+                {{!-- <span class="tooltiptext" id="myTooltip">Copy đường dẫn</span> --}}
                 <img src="/css/style/image/ic_copy.svg" alt="ic_copy" id="ic_copy_link_detail_job">
             </div>
         </div>
@@ -169,6 +170,31 @@
 
     </div>
 </div>
+
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+        <div class="toast-header">
+            <img src="https://firebasestorage.googleapis.com/v0/b/jobhiringweb.appspot.com/o/logo%2FShortCutICon.svg?alt=media&token=9e994b0d-963e-443e-9088-1f8b25b9aa7d" class="rounded me-2" alt="..." width="30px">
+            <strong class="me-auto">JORE</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Copy đường dẫn thành công
+        </div>
+    </div>
+</div>
+
+<style>
+    #circle_copy_link_detail_job {
+        cursor: pointer;
+    }
+
+    #circle_copy_link_detail_job:hover {
+        opacity: 0.75;
+    }
+</style>
+
 <script>
     var inputs = document.querySelectorAll('.inputfile');
     Array.prototype.forEach.call(inputs, function (input) {
@@ -185,5 +211,23 @@
                 document.getElementById("label_file").innerHTML = labelVal;
         });
     });
+
+
+    $('#link_detail_job').val(window.location.href)
+
+    function myFunction() {
+        var copyText = document.getElementById("link_detail_job");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+
+    }
+
+    $('#circle_copy_link_detail_job').on('click', function(){
+        const toastLiveExample = document.getElementById('liveToast')
+        const toast = new bootstrap.Toast(toastLiveExample)
+        toast.show()
+    })
+
 
 </script>

@@ -5,7 +5,6 @@ const candidateModel = require("../models/candidate.m");
 class Candidate {
     async home(req, res, next) {
         try {
-            if (req.isAuthenticated()) {
                 var user = req.session.passport.user;
                 var topJob = await candidateModel.topJob(6);
                 res.render("candidate/content_home.hbs", {
@@ -17,16 +16,13 @@ class Candidate {
                     topJob:true,
                     not_record: false,
                 });
-            } else {
-                res.redirect("/auth/login");
-            }
+         
         } catch (error) {
             next(error);
         }
     }
     async detail_job(req, res, next) {
         try {
-            if (req.isAuthenticated()) {
                 var user = req.session.passport.user;
                 var idDocRecruitment = req.params.id;
                 await candidateModel.updateView(idDocRecruitment);
@@ -46,9 +42,7 @@ class Candidate {
                     },
                     not_record: false,
                 });
-            } else {
-                res.redirect("/auth/login");
-            }
+          
         } catch (error) {
             next(error);
         }
@@ -147,7 +141,6 @@ class Candidate {
     }
     async profile_employer(req, res, next) {
         try {
-            if (req.isAuthenticated()) {
                 var user = req.session.passport.user;
 
                 // get information of employer
@@ -171,9 +164,7 @@ class Candidate {
                     },
                     total_rating
                 });
-            } else {
-                res.redirect("/auth/login");
-            }
+         
         } catch (error) {
             next(error);
         }

@@ -175,7 +175,8 @@
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
         <div class="toast-header">
-            <img src="https://firebasestorage.googleapis.com/v0/b/jobhiringweb.appspot.com/o/logo%2FShortCutICon.svg?alt=media&token=9e994b0d-963e-443e-9088-1f8b25b9aa7d" class="rounded me-2" alt="..." width="30px">
+            <img src="https://firebasestorage.googleapis.com/v0/b/jobhiringweb.appspot.com/o/logo%2FShortCutICon.svg?alt=media&token=9e994b0d-963e-443e-9088-1f8b25b9aa7d"
+                class="rounded me-2" alt="..." width="30px">
             <strong class="me-auto">JORE</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
@@ -196,6 +197,9 @@
 </style>
 
 <script>
+
+
+
     var inputs = document.querySelectorAll('.inputfile');
     Array.prototype.forEach.call(inputs, function (input) {
         var label = input.nextElementSibling,
@@ -223,7 +227,7 @@
 
     }
 
-    $('#circle_copy_link_detail_job').on('click', function(){
+    $('#circle_copy_link_detail_job').on('click', function () {
         const toastLiveExample = document.getElementById('liveToast')
         const toast = new bootstrap.Toast(toastLiveExample)
         toast.show()

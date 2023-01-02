@@ -2,16 +2,12 @@
     <div id="rectangle_form_signin_recruit">
         <img src="/css/style/image/welcome_signin_recruit.svg" id="text_welcome_signin_recruit"
             alt="text_welcome_signin_recruit">
-        <img src="/css/style/image/text_introduct_signin_recruit.svg" id="text_introduce_signin_recruit"
-            alt="text_introduce_signin_recruit">
-
+   
         <form method="post" action="/auth/sign_up" class="needs-validation" id="formSignUp">
 
-            {{#if message}}
             <div class="alert alert-success mt-2">
                 {{message}}
             </div>
-            {{/if}}
 
             {{#if messageDanger}}
             <div class="alert alert-danger mt-2">

@@ -3696,7 +3696,7 @@ pre {
 
     position: absolute;
     width: 130px;
-    height: 142px;
+    /* height: 142px; */
     left: 20px;
     top: 20px;
     border: 1px solid #D7E4E8;

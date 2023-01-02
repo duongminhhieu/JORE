@@ -114,7 +114,6 @@ class Candidate {
         console.log(req.body);
         var listjob = await candidateModel.getAllRecruitment(req.body);
 
-        var user = req.session.passport.user;
         res.json({
             success: true,
             list_job: listjob

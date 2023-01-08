@@ -102,6 +102,7 @@ class Candidate {
                         user: user,
                         list_cvs: JSON.stringify(_candidate_cvs),
                     },
+                    not_record:false
                 });
             } else {
                 res.redirect("/auth/login");

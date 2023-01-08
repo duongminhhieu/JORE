@@ -288,7 +288,7 @@ pre {
     position: relative;
     width: 1920px;
     height: 339px;
-    top: 0px;
+    top: 0;
     background: #221F20;
 }
 
@@ -2056,7 +2056,7 @@ pre {
     font-size: 20px;
     line-height: 36px;
     /* identical to box height */
-
+    text-decoration: none;
     color: #29333F;
 
 }
@@ -3486,19 +3486,19 @@ pre {
 
 /*application_management_candidate*/
 .rectangle_mid_application_management_candidate {
+
     position: relative;
-    height: 843px;
-    top: 0px;
-    background: #F2F2F2;
+
+    margin-top: 0px;
+    background-color: #F2F2F2;
+
 }
 
 .rectangle_content_application_management_candidate {
-    position: absolute;
+    position: relative;
+    margin-top: 0px;   
     width: 1436px;
-    height: 815px;
     left: 242px;
-    top: 28px;
-
     background: #FFFFFF;
     border-radius: 10px;
 }
@@ -3524,9 +3524,8 @@ pre {
 #side_left_application_management_candidate {
     box-sizing: border-box;
 
-    position: absolute;
+    position: relative;
     width: 409px;
-    height: 469px;
     left: 55px;
     top: 92px;
 }
@@ -3616,23 +3615,20 @@ pre {
 }
 
 #side_main_application_management_candidate {
-    position: absolute;
     width: 894px;
-    height: 673px;
-    left: 486px;
-    top: 92px;
-
+    margin-left: 486px;
+    margin-top: 0px;
+    min-height: 570px;
     background: rgba(202, 240, 248, 0.4);
     border-radius: 10px;
 }
 
 #number_application_management_candidate {
-    position: absolute;
     display: inline-block;
 
     height: 36px;
-    left: 45px;
-    top: 31px;
+    margin-left: 45px;
+    margin-top: 31px;
 
     font-family: 'Poppins', sans-serif;
     font-style: normal;
@@ -3646,12 +3642,10 @@ pre {
 }
 
 .card_application_management_candidate {
-    position: absolute;
     align-content: flex-start;
-    top: 84px;
-    left: 45px;
-    right: 43px;
-    bottom: 20px;
+    margin-top: 44px;
+    margin-left: 45px;
+    margin-right: 43px;
 }
 
 .item_application_management_candidate {
